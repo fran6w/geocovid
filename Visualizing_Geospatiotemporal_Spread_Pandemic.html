@@ -13128,7 +13128,7 @@ div#notebook {
 </ul>
 <p>Limitations of the data visualization:</p>
 <ul>
-<li>For large countries like China or the USA, displaying data per region would be more meaningful instead of data for the whole country and positionned on capital's location.</li>
+<li>For large countries like China or the USA, displaying data per region would be more meaningful instead of data for the whole country and positionned on capital's location, provided data are available.</li>
 <li>The displayed 3D Earth uses a pure spherical model, it is not the actual shape of the Earth. </li>
 <li>The displayed 3D Earth is transparent, it might be opacified slightly to ease the interpretation of the graphic.</li>
 <li>The animation widget displays the number of days since the pandemic started, it might be switched to the actual date of the data.</li>
@@ -13218,7 +13218,7 @@ pythreejs 2.2.0
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># load COVID data for 2020</span>
-<span class="n">df_covid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/owid-covid-data.csv&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iso_code&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;total_deaths&#39;</span><span class="p">])</span>
+<span class="n">df_covid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/owid-covid-data.csv&#39;</span><span class="p">)</span>
 <span class="n">df_covid</span> <span class="o">=</span> <span class="n">df_covid</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_covid</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;2020&#39;</span><span class="p">)]</span>
 <span class="n">df_covid</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
@@ -13257,31 +13257,104 @@ pythreejs 2.2.0
     <tr style="text-align: right;">
       <th></th>
       <th>iso_code</th>
+      <th>location</th>
       <th>date</th>
+      <th>total_cases</th>
+      <th>new_cases</th>
       <th>total_deaths</th>
+      <th>new_deaths</th>
+      <th>total_cases_per_million</th>
+      <th>new_cases_per_million</th>
+      <th>total_deaths_per_million</th>
+      <th>...</th>
+      <th>aged_65_older</th>
+      <th>aged_70_older</th>
+      <th>gdp_per_capita</th>
+      <th>extreme_poverty</th>
+      <th>cvd_death_rate</th>
+      <th>diabetes_prevalence</th>
+      <th>female_smokers</th>
+      <th>male_smokers</th>
+      <th>handwashing_facilities</th>
+      <th>hospital_beds_per_100k</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>0</td>
       <td>ABW</td>
+      <td>Aruba</td>
       <td>2020-03-13</td>
+      <td>2</td>
+      <td>2</td>
       <td>0</td>
+      <td>0</td>
+      <td>18.733</td>
+      <td>18.733</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>13.085</td>
+      <td>7.452</td>
+      <td>35973.781</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>11.62</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <td>1</td>
       <td>ABW</td>
+      <td>Aruba</td>
       <td>2020-03-20</td>
+      <td>4</td>
+      <td>2</td>
       <td>0</td>
+      <td>0</td>
+      <td>37.465</td>
+      <td>18.733</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>13.085</td>
+      <td>7.452</td>
+      <td>35973.781</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>11.62</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <td>2</td>
       <td>ABW</td>
+      <td>Aruba</td>
       <td>2020-03-24</td>
+      <td>12</td>
+      <td>8</td>
       <td>0</td>
+      <td>0</td>
+      <td>112.395</td>
+      <td>74.930</td>
+      <td>0.0</td>
+      <td>...</td>
+      <td>13.085</td>
+      <td>7.452</td>
+      <td>35973.781</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>11.62</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
+<p>3 rows × 32 columns</p>
 </div>
 </div>
 
@@ -13381,7 +13454,7 @@ pythreejs 2.2.0
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="1.3-Capital-data-with-longitude-and-latitude-per-capital">1.3 Capital data with longitude and latitude per capital<a class="anchor-link" href="#1.3-Capital-data-with-longitude-and-latitude-per-capital">&#182;</a></h4>
+<h4 id="1.3-Capital-data-with-longitude-and-latitude">1.3 Capital data with longitude and latitude<a class="anchor-link" href="#1.3-Capital-data-with-longitude-and-latitude">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -13510,10 +13583,15 @@ pythreejs 2.2.0
 <span class="c1"># It relies on a spherical model which simplifies the actual shape of the Earth.</span>
 <span class="c1"># It also perfoms a permutation between axis (x -&gt; -x, y -&gt; z, z -&gt; y)</span>
 <span class="c1"># Used for capitals as well as coastlines</span>
+
+<span class="n">degres_to_radians</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
+
 <span class="k">def</span> <span class="nf">compute_xyz</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;long&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;long&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">)</span>
+    <span class="n">long_in_radians</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;long&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">degres_to_radians</span>
+    <span class="n">lat_in_radians</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">degres_to_radians</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">long_in_radians</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat_in_radians</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat_in_radians</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">long_in_radians</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat_in_radians</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13534,7 +13612,10 @@ pythreejs 2.2.0
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># merge countries and capitals using ISO 2 codes</span>
-<span class="n">df_geo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_countries</span><span class="p">,</span> <span class="n">df_capitals</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;ISO-3166alpha2&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="n">df_geo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_countries</span><span class="p">,</span>
+                  <span class="n">df_capitals</span><span class="p">,</span>
+                  <span class="n">on</span><span class="o">=</span><span class="s1">&#39;ISO-3166alpha2&#39;</span><span class="p">,</span>
+                  <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
 <span class="n">df_geo</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 
@@ -13630,14 +13711,14 @@ pythreejs 2.2.0
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># table with total deaths by day and country</span>
-<span class="n">df_total_deaths</span> <span class="o">=</span> <span class="n">df_covid</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span>
-                                       <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;iso_code&#39;</span><span class="p">,</span>
-                                       <span class="n">values</span><span class="o">=</span><span class="s1">&#39;total_deaths&#39;</span><span class="p">)</span>
-<span class="n">df_total_deaths</span> <span class="o">=</span> <span class="n">df_total_deaths</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<span class="n">df_total_deaths</span> <span class="o">=</span> <span class="n">df_total_deaths</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
-<span class="n">df_total_deaths</span> <span class="o">=</span> <span class="n">df_total_deaths</span><span class="o">.</span><span class="n">T</span>
-<span class="n">df_total_deaths</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># table with total deaths by country and day</span>
+<span class="n">col</span> <span class="o">=</span> <span class="s1">&#39;total_deaths&#39;</span>
+<span class="n">df_pandemic</span> <span class="o">=</span> <span class="n">df_covid</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;iso_code&#39;</span><span class="p">,</span>
+                                   <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span>
+                                   <span class="n">values</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+<span class="n">df_pandemic</span> <span class="o">=</span> <span class="n">df_pandemic</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df_pandemic</span> <span class="o">=</span> <span class="n">df_pandemic</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">)</span>
+<span class="n">df_pandemic</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13818,10 +13899,14 @@ pythreejs 2.2.0
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># merge total deaths and geo data usin ISO 3 codes</span>
-<span class="n">df_total_deaths</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_total_deaths</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span> <span class="n">df_geo</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;iso_code&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;ISO-3166alpha3&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
-<span class="n">compute_xyz</span><span class="p">(</span><span class="n">df_total_deaths</span><span class="p">)</span>
-<span class="n">df_total_deaths</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># merge total deaths and geo data using ISO 3 codes</span>
+<span class="n">df_pandemic</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_pandemic</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(),</span>
+                       <span class="n">df_geo</span><span class="p">,</span>
+                       <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;iso_code&#39;</span><span class="p">,</span>
+                       <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;ISO-3166alpha3&#39;</span><span class="p">,</span>
+                       <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+<span class="n">compute_xyz</span><span class="p">(</span><span class="n">df_pandemic</span><span class="p">)</span>
+<span class="n">df_pandemic</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13988,16 +14073,16 @@ pythreejs 2.2.0
 <span class="n">fig</span> <span class="o">=</span> <span class="n">ipv</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 
 <span class="c1"># total deaths data are in columns whose name starts with &#39;2020&#39;</span>
-<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_total_deaths</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;2020&#39;</span><span class="p">)]</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_pandemic</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;2020&#39;</span><span class="p">)]</span>
 
 <span class="c1"># plot the total deaths (log scale) as red arrows around the 3D Earth</span>
 <span class="c1"># all data are fixed except the size which will change at each step</span>
-<span class="n">xs</span> <span class="o">=</span> <span class="n">df_total_deaths</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="n">ys</span> <span class="o">=</span> <span class="n">df_total_deaths</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="n">zs</span> <span class="o">=</span> <span class="n">df_total_deaths</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">df_pandemic</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">df_pandemic</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">zs</span> <span class="o">=</span> <span class="n">df_pandemic</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">ipv</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xs</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">,</span> <span class="n">ys</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">,</span> <span class="n">zs</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">,</span>  <span class="c1"># factor to move the arrow out of the 3D Earth</span>
                 <span class="n">vx</span><span class="o">=</span><span class="n">xs</span><span class="p">,</span> <span class="n">vy</span><span class="o">=</span><span class="n">ys</span><span class="p">,</span> <span class="n">vz</span><span class="o">=</span><span class="n">zs</span><span class="p">,</span>
-                <span class="n">size</span><span class="o">=</span><span class="n">df_total_deaths</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">size</span><span class="o">=</span><span class="n">df_pandemic</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
                 <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkred&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;arrow&quot;</span><span class="p">)</span>
 
 <span class="c1"># plot the coastlines</span>
@@ -14041,13 +14126,13 @@ pythreejs 2.2.0
 
  
  
-<div id="86a3f98d-54e8-4870-a5e3-f2a66b9119be"></div>
+<div id="b89002e7-62a8-4cdd-be5d-ca41eaeea02d"></div>
 <div class="output_subarea output_widget_view ">
 <script type="text/javascript">
-var element = $('#86a3f98d-54e8-4870-a5e3-f2a66b9119be');
+var element = $('#b89002e7-62a8-4cdd-be5d-ca41eaeea02d');
 </script>
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5690e2500b724392a190c675c9f19455", "version_major": 2, "version_minor": 0}
+{"model_id": "ada9ecb189914a5c82a58930b5c77a8f", "version_major": 2, "version_minor": 0}
 </script>
 </div>
 
